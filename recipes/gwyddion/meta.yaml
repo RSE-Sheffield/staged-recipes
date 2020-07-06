@@ -1,0 +1,65 @@
+{% set name = "gwyddion" %}
+{% set version = "2.56" %}
+
+package:
+  name: "{{ name | lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://sourceforge.net/projects/{{ name }}/files/{{ name }}/{{ version }}/{{ name }}-{{ version }}.tar.xz/download"
+  fn: "{{ name }}-{{ version }}.tar.xz"
+  sha256: 22dc4433fde58b502b7efeb076efab3f50ccfcc2d8198d746b65cfe6e2b8037d
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - "{{ compiler('c') }}"
+    - make
+    - pkg-config
+    - llvm-openmp  # [osx]
+    - libgomp      # [linux]
+  host:
+    - python <3.0
+    - setuptools
+    - gtk2
+    - glib
+    - pango
+    - cairo
+    - fftw
+    - zlib
+    - libzip
+    - bzip2
+    - libpng
+    - libwebp
+    - openexr
+    - cfitsio
+      # GtkGLExt        - no conda pkg for this optional Gwyddion dependency
+      # PyGTK2          - no conda pkg for this optional Gwyddion dependency
+      # GtkSourceView  	- no conda pkg for this optional Gwyddion dependency
+      # libunique       - no conda pkg for Python 2 for this optional Gwyddion dependency
+  run:
+    - python <3.0
+
+test:
+  imports:
+    - pygwy
+  commands:
+    - "{{ name }}"
+
+about:
+  home: "http://{{ name }}.net/"
+  license: GPL-2.0
+  license-family: GPL
+  summary: Data visualization and analysis for scanning probe microscopy 
+  description: |
+    A data visualization and processing tool for scanning probe microscopy
+    (SPM, i.e. AFM, STM, MFM, SNOM/NSOM, ...) and profilometry data, useful
+    also for general image and 2D data analysis.
+  doc_url: "http://{{ name }}.net/"
+  dev_url: "https://sourceforge.net/projects/{{ name }}/"
+
+extra:
+  recipe-maintainers:
+    - willfurnass
